@@ -108,7 +108,7 @@ traverse f (Or x  y) = Or  (traverse f x) (traverse f y)
 traverse f (Product x y) = Product (traverse f x)
                                    (traverse f y)
 traverse f (Not x) = Not (traverse f x)
-traverse f (Leaf x) = Leaf (f x)
+traverse f (Leaf x) = f x
 \end{lstlisting}
 \end{block}
 \end{frame}
