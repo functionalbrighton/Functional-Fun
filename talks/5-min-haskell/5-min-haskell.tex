@@ -1,0 +1,128 @@
+% WARNING! you need latex-beamer installed on your system
+% If you are using darwinports on MacOS X, this is already
+% included.
+
+%\documentclass[compress,10pt,a4paper]{beamer}
+\documentclass[compress]{beamer}
+
+% comment this if you want to get rid of the little points
+\useoutertheme[subsection=false]{miniframes}
+\usecolortheme{dove}
+
+
+\definecolor{marroon}{rgb}{0.5,0,0}
+\newcommand\highlightNew{\color{red}}
+\newcommand\highlightOld{\color{marroon}}
+
+%\usepackage[latin1]{inputenc}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{listings}
+
+\lstset{language=Haskell,
+        basicstyle=\footnotesize\tt,
+        commentstyle=\tt}
+
+\begin{document}
+
+\title{Why I use Haskell}
+\author{Eric Kow}
+\institute{\url{http://erickow.com/talks/5-min-haskell.pdf}}
+\date{2011-05-17}
+
+\begin{frame}
+\maketitle
+\end{frame}
+
+% -------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Things I care most about}
+
+\begin{enumerate}
+\item Problem solving/identification:\\
+      \small{How do I solve X?  What is X in the first place?}\\
+\item Correctness\\
+      \small{How do I solve X with as few bugs as possible?}\\
+\item Clarity\\
+      \small{Will Future-Eric understand this code? Will my colleagues?}\\
+\end{enumerate}
+
+\end{frame}
+
+
+% -------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Types}
+
+\begin{enumerate}
+\item Problem solving: think about why types I need\\
+\small{Easier for me than thinking about object hierarchies}
+\item Problem solving: sum types = thinking in terms of cases 
+\item Clarity - types == documentation\\
+      \small{I can sort of tell what a function does by its type signature}
+\item Correctness\\
+      \small{Compiler catches when I contradict myself}
+\end{enumerate}
+\end{frame}
+
+% -------------------------------------------------------------------------
+\begin{frame}[fragile]
+\frametitle{Types 2}
+\begin{block}{Example}
+\begin{lstlisting}
+data Compound = And Compound Compound
+              | Or Compound Compound
+              | Product Compound Compound
+              | Not Compound
+              | Leaf Unitary
+   deriving (Show, Eq)
+\end{lstlisting}
+\end{block}
+
+Code that works with Compound must account for all cases.
+\end{frame}
+
+
+% -------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Higher order functions}
+
+A higher order function is a function that takes function(s)
+as an argument
+
+\begin{enumerate}
+\item Easier to reuse my code!
+\item Very general purpose traversals
+\end{enumerate}
+
+\end{frame}
+
+% -------------------------------------------------------------------------
+\begin{frame}[fragile]
+
+\begin{block}{Higher order function example}
+\begin{lstlisting}
+traverse :: (Unitary -> Compound) -> Compound -> Compound
+traverse f (And x y) = And (traverse f x) (traverse f y)
+traverse f (Or x  y) = Or  (traverse f x) (traverse f y)
+traverse f (Product x y) = Product (traverse f x)
+                                   (traverse f y)
+traverse f (Not x) = Not (traverse f x)
+traverse f (Leaf x) = Leaf (f x)
+\end{lstlisting}
+\end{block}
+\end{frame}
+
+% -------------------------------------------------------------------------
+\begin{frame}
+\frametitle{Immutability}
+\begin{enumerate}
+\item Solve small problems (functions)
+\item Combine them with powerful tools (higher order functions)
+\item Not worry about side effects!
+\end{enumerate}
+
+\end{frame}
+
+
+\end{document}

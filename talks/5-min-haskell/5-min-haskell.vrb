@@ -1,0 +1,11 @@
+\par \begin{block}{Higher order function example}
+\begin{lstlisting}
+traverse :: (Unitary -> Compound) -> Compound -> Compound
+traverse f (And x y) = And (traverse f x) (traverse f y)
+traverse f (Or x  y) = Or  (traverse f x) (traverse f y)
+traverse f (Product x y) = Product (traverse f x)
+                                   (traverse f y)
+traverse f (Not x) = Not (traverse f x)
+traverse f (Leaf x) = Leaf (f x)
+\end{lstlisting}
+\end{block}
