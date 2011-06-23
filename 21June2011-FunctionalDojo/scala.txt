@@ -1,0 +1,53 @@
+
+dojo$ scala
+Welcome to Scala version 2.9.0.1 (Java HotSpot(TM) 64-Bit Server VM, Java 1.6.0_24).
+Type in expressions to have them evaluated.
+Type :help for more information.
+
+scala> 1 until 10
+res0: scala.collection.immutable.Range = Range(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+scala> for ( x <- 1 until 10 if x % 3 ==0 || x % 5 ==0)
+     | yield x
+res1: scala.collection.immutable.IndexedSeq[Int] = Vector(3, 5, 6, 9)
+
+scala> res1 sum
+res2: Int = 23
+
+scala> 1 until 10 filter ( x => x % 3 ==0 || x % 5 ==0) sum
+res3: Int = 23
+
+scala> 1.until(10).filter( x => x % 3 ==0 || x % 5 ==0).sum
+res4: Int = 23
+
+scala> for ( x <- 1 until 10 if x % 3 ==0 || x % 5 ==0) yield x
+res5: scala.collection.immutable.IndexedSeq[Int] = Vector(3, 5, 6, 9)
+
+scala> for ( x <- (1 until 10).view if x % 3 ==0 || x % 5 ==0) yield x
+res7: scala.collection.SeqView[Int,Seq[_]] = SeqViewFM(...)
+
+scala> for ( x <- Stream.from(1) if x % 3 ==0 || x % 5 ==0) yield x
+res8: scala.collection.immutable.Stream[Int] = Stream(3, ?)
+
+scala> res8 takeWhile ( _ < 10)
+res9: scala.collection.immutable.Stream[Int] = Stream(3, ?)
+
+scala> res8 takeWhile ( _ < 10) toList
+res10: List[Int] = List(3, 5, 6, 9)
+
+scala> res8 takeWhile ( (x) => x < 10 ) toList
+res11: List[Int] = List(3, 5, 6, 9)
+
+scala> def lessThanTen(x: Int) = x < 10
+lessThanTen: (x: Int)Boolean
+
+scala> res8 takeWhile ( lessThanTen ) toList
+res12: List[Int] = List(3, 5, 6, 9)
+
+// Later on I made sure we could run the 1000 version without error:
+
+scala> res8 takeWhile ( _ < 1000)
+res14: scala.collection.immutable.Stream[Int] = Stream(3, ?)
+
+scala> res8 takeWhile ( _ < 1000) sum
+res15: Int = 233168
